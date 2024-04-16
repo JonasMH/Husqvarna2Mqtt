@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  husqvarna2mqtt:
+    image: ${DOCKER_REGISTRY-}husqvarna2mqtt
+    build:
+      context: .
+      dockerfile: src/Dockerfile
