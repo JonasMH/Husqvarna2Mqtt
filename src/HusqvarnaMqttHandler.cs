@@ -43,7 +43,7 @@ public class HusqvarnaMqttHandler(ILogger<HusqvarnaMqttHandler> logger, Husqvarn
             await mqttConnection.PublishAsync(new MQTTnet.MqttApplicationMessageBuilder()
                 .WithTopic(StatusTopic(mower))
                 .WithRetainFlag()
-                .WithPayload(JsonSerializer.SerializeToUtf8Bytes(mower.Attributes, HusqvarnaJsonContext.Default.HusqvarnaDataEntityMower))
+                .WithPayload(JsonSerializer.SerializeToUtf8Bytes(mower.Attributes, HusqvarnaJsonContext.Default.Mower))
                 .Build());
         }
     }
