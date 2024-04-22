@@ -74,6 +74,101 @@ public class HusqvarnaMqttHandler(ILogger<HusqvarnaMqttHandler> logger, Husqvarn
             DeviceClass = HomeAssistantDeviceClass.BATTERY.Value,
         });
 
+        await mqttConnection.PublishDiscoveryDocument(new MqttSensorDiscoveryConfig()
+        {
+            Device = device,
+            Name = $"Cutting Blade Usage Time",
+            ValueTemplate = "{{ value_json.statistics.cuttingBladeUsageTime }}",
+            StateTopic = StatusTopic(mower),
+            StateClass = MqttDiscoveryStateClass.TotalIncreasing,
+            UniqueId = $"{mqttConnection.MqttOptions.NodeId}-{mower.Id}-cutting-blade-usage",
+            UnitOfMeasurement = HomeAssistantUnits.TIME_SECONDS.Value,
+        });
+
+        await mqttConnection.PublishDiscoveryDocument(new MqttSensorDiscoveryConfig()
+        {
+            Device = device,
+            Name = $"Charging Cycles",
+            ValueTemplate = "{{ value_json.statistics.numberOfChargingCycles }}",
+            StateTopic = StatusTopic(mower),
+            StateClass = MqttDiscoveryStateClass.Total,
+            UniqueId = $"{mqttConnection.MqttOptions.NodeId}-{mower.Id}-charging-cycles"
+        });
+
+        await mqttConnection.PublishDiscoveryDocument(new MqttSensorDiscoveryConfig()
+        {
+            Device = device,
+            Name = $"Collisions",
+            ValueTemplate = "{{ value_json.statistics.numberOfCollisions }}",
+            StateTopic = StatusTopic(mower),
+            StateClass = MqttDiscoveryStateClass.Total,
+            UniqueId = $"{mqttConnection.MqttOptions.NodeId}-{mower.Id}-collisions",
+        });
+
+        await mqttConnection.PublishDiscoveryDocument(new MqttSensorDiscoveryConfig()
+        {
+            Device = device,
+            Name = $"Charging Time",
+            ValueTemplate = "{{ value_json.statistics.totalChargingTime }}",
+            StateTopic = StatusTopic(mower),
+            StateClass = MqttDiscoveryStateClass.Total,
+            UniqueId = $"{mqttConnection.MqttOptions.NodeId}-{mower.Id}-charging-time",
+            UnitOfMeasurement = HomeAssistantUnits.TIME_SECONDS.Value,
+        });
+
+        await mqttConnection.PublishDiscoveryDocument(new MqttSensorDiscoveryConfig()
+        {
+            Device = device,
+            Name = $"Cutting Time",
+            ValueTemplate = "{{ value_json.statistics.totalCuttingTime }}",
+            StateTopic = StatusTopic(mower),
+            StateClass = MqttDiscoveryStateClass.Total,
+            UniqueId = $"{mqttConnection.MqttOptions.NodeId}-{mower.Id}-cutting-time",
+            UnitOfMeasurement = HomeAssistantUnits.TIME_SECONDS.Value,
+        });
+
+        await mqttConnection.PublishDiscoveryDocument(new MqttSensorDiscoveryConfig()
+        {
+            Device = device,
+            Name = $"Distance Driven",
+            ValueTemplate = "{{ value_json.statistics.totalDrivenDistance }}",
+            StateTopic = StatusTopic(mower),
+            StateClass = MqttDiscoveryStateClass.Total,
+            UniqueId = $"{mqttConnection.MqttOptions.NodeId}-{mower.Id}-distance-driven",
+            UnitOfMeasurement = HomeAssistantUnits.LENGTH_METERS.Value,
+        });
+
+        await mqttConnection.PublishDiscoveryDocument(new MqttSensorDiscoveryConfig()
+        {
+            Device = device,
+            Name = $"Running Time",
+            ValueTemplate = "{{ value_json.statistics.totalRunningTime }}",
+            StateTopic = StatusTopic(mower),
+            StateClass = MqttDiscoveryStateClass.Total,
+            UniqueId = $"{mqttConnection.MqttOptions.NodeId}-{mower.Id}-running-time",
+            UnitOfMeasurement = HomeAssistantUnits.TIME_SECONDS.Value,
+        });
+
+        await mqttConnection.PublishDiscoveryDocument(new MqttSensorDiscoveryConfig()
+        {
+            Device = device,
+            Name = $"Searching Time",
+            ValueTemplate = "{{ value_json.statistics.totalSearchingTime }}",
+            StateTopic = StatusTopic(mower),
+            StateClass = MqttDiscoveryStateClass.Total,
+            UniqueId = $"{mqttConnection.MqttOptions.NodeId}-{mower.Id}-searching-time",
+            UnitOfMeasurement = HomeAssistantUnits.TIME_SECONDS.Value,
+        });
+
+        await mqttConnection.PublishDiscoveryDocument(new MqttSensorDiscoveryConfig()
+        {
+            Device = device,
+            Name = $"Error Code",
+            ValueTemplate = "{{ value_json.mower.errorCode }}",
+            StateTopic = StatusTopic(mower),
+            StateClass = MqttDiscoveryStateClass.Total,
+            UniqueId = $"{mqttConnection.MqttOptions.NodeId}-{mower.Id}-error-code"
+        });
 
         await mqttConnection.PublishDiscoveryDocument(new MqttLawnMowerDiscoveryConfig()
         {
