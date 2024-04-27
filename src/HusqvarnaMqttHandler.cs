@@ -1,9 +1,6 @@
 ﻿using HomeAssistantDiscoveryNet;
 using Husqvarna2Mqtt.Models;
 using MQTTnet;
-using MQTTnet.Packets;
-using System.Diagnostics.Metrics;
-using System.Globalization;
 using System.Text.Json;
 using ToMqttNet;
 
@@ -131,6 +128,14 @@ public class HusqvarnaMqttHandler(ILogger<HusqvarnaMqttHandler> logger, Husqvarn
                 await PublishDiscoveryDocumentAsync(mower);
                 _publishedDiscoveryConfigs.Add(mower.Id);
             }
+
+            await client.ActionAsync(mower.Id, new Start()
+            {
+                Type = "Start",
+                Attributes = {
+                        Duration = 90
+                    }
+            });
 
             await mqttConnection.PublishAsync(new MqttApplicationMessageBuilder()
                 .WithTopic(StatusTopic(mower))

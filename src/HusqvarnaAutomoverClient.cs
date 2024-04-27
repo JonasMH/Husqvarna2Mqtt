@@ -1,6 +1,7 @@
 ﻿using Husqvarna2Mqtt.Models;
 using Microsoft.Extensions.Options;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net.Http.Headers;
 using System.Text.Json.Serialization;
 
 namespace Husqvarna2Mqtt;
@@ -21,7 +22,7 @@ public class HusqvarnaAutomoverClient(HttpClient httpClient, IOptions<HusqvarnaA
 
     public async Task<JwtSecurityToken> GetTokenAsync()
     {
-        if (_token == null || _token.ValidTo > (DateTime.UtcNow - TimeSpan.FromMinutes(5)))
+        if (_token == null || _token.ValidTo < (DateTime.UtcNow - TimeSpan.FromMinutes(5)))
         {
             _token = await GetNewTokenAsync();
         }
@@ -65,16 +66,20 @@ public class HusqvarnaAutomoverClient(HttpClient httpClient, IOptions<HusqvarnaA
     public async Task<JsonApiDataDocumentCommandResult> ActionAsync<T>(Guid mowerId, T action) where T : JsonApiAction
     {
         var request = new HttpRequestMessage(HttpMethod.Post, $"https://api.amc.husqvarna.dev/v1/mowers/{mowerId}/actions");
-        request.Content = JsonContent.Create(action, HusqvarnaJsonContext.Default.GetTypeInfo(typeof(T)));
+        request.Content = JsonContent.Create(new ActionRequestBody<T> { Data = action }, HusqvarnaJsonContext.Default.GetTypeInfo(typeof(ActionRequestBody<T>))!, new MediaTypeHeaderValue("application/vnd.api+json"));
 
         await AppendAuthAsync(request);
 
-
         var response = await httpClient.SendAsync(request);
-
 
         response.EnsureSuccessStatusCode();
 
-        return (await response.Content.ReadFromJsonAsync(HusqvarnaJsonContext.Default.JsonApiDataDocumentCommandResult));
+        return (await response.Content.ReadFromJsonAsync(HusqvarnaJsonContext.Default.JsonApiDataDocumentCommandResult))!;
     }
+}
+
+public class ActionRequestBody<T> where T : JsonApiAction
+{
+    [JsonPropertyName("data")]
+    public T Data { get; set; }
 }

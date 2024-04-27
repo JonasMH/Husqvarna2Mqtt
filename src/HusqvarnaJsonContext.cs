@@ -5,13 +5,13 @@ namespace Husqvarna2Mqtt;
 
 [JsonSerializable(typeof(JsonApiDataListDocument))]
 [JsonSerializable(typeof(JsonApiDataDocumentCommandResult))]
-[JsonSerializable(typeof(Start))]
-[JsonSerializable(typeof(StartInWorkArea))]
-[JsonSerializable(typeof(ResumeSchedule))]
-[JsonSerializable(typeof(Pause))]
-[JsonSerializable(typeof(Park))]
-[JsonSerializable(typeof(ParkUntilNextSchedule))]
-[JsonSerializable(typeof(ParkUntilFurtherNotice))]
+[JsonSerializable(typeof(ActionRequestBody<Start>))]
+[JsonSerializable(typeof(ActionRequestBody<StartInWorkArea>))]
+[JsonSerializable(typeof(ActionRequestBody<ResumeSchedule>))]
+[JsonSerializable(typeof(ActionRequestBody<Pause>))]
+[JsonSerializable(typeof(ActionRequestBody<Park>))]
+[JsonSerializable(typeof(ActionRequestBody<ParkUntilNextSchedule>))]
+[JsonSerializable(typeof(ActionRequestBody<ParkUntilFurtherNotice>))]
 [JsonSerializable(typeof(GetTokenResponse))]
 [JsonSourceGenerationOptions(
     PropertyNamingPolicy = JsonKnownNamingPolicy.CamelCase,
