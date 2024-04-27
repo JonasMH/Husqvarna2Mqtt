@@ -166,8 +166,7 @@ namespace Husqvarna2Mqtt.Models
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("type")]
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public JsonApiDataCommandResultType Type { get; set; } = default!;
+        public string Type { get; set; } = default!;
 
         /// <summary>
         /// The command id generated when sending the command to the mower.
@@ -376,8 +375,7 @@ namespace Husqvarna2Mqtt.Models
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("mode")]
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public MowerAppMode Mode { get; set; } = default!;
+        public string Mode { get; set; } = default!;
 
         /// <summary>
         /// Activity:
@@ -393,8 +391,7 @@ namespace Husqvarna2Mqtt.Models
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("activity")]
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public MowerAppActivity Activity { get; set; } = default!;
+        public string Activity { get; set; } = default!;
 
         /// <summary>
         /// Inactive reason:
@@ -405,8 +402,7 @@ namespace Husqvarna2Mqtt.Models
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("inactiveReason")]
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public MowerAppInactiveReason InactiveReason { get; set; } = default!;
+        public string InactiveReason { get; set; } = default!;
 
         /// <summary>
         /// State:
@@ -426,8 +422,7 @@ namespace Husqvarna2Mqtt.Models
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("state")]
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public MowerAppState State { get; set; } = default!;
+        public string State { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("errorCode")]
         public int ErrorCode { get; set; } = default!;
@@ -580,8 +575,7 @@ namespace Husqvarna2Mqtt.Models
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("restrictedReason")]
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public PlannerRestrictedReason RestrictedReason { get; set; } = default!;
+        public string RestrictedReason { get; set; } = default!;
 
         /// <summary>
         /// External reason set by i.e. IFTTT, Google Assistant or Amazon Alexa. Ranges:
@@ -1042,134 +1036,134 @@ namespace Husqvarna2Mqtt.Models
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.3.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public enum JsonApiDataCommandResultType
+    public class JsonApiDataCommandResultTypeValues
     {
 
-        [System.Runtime.Serialization.EnumMember(Value = @"control")]
-        Control = 0,
 
-        [System.Runtime.Serialization.EnumMember(Value = @"Timetable")]
-        Timetable = 1,
 
-        [System.Runtime.Serialization.EnumMember(Value = @"cuttingHeight")]
-        CuttingHeight = 2,
+        public static string Control = "control";
 
-        [System.Runtime.Serialization.EnumMember(Value = @"headlight")]
-        Headlight = 3,
+        
+        public static string Timetable = "Timetable";
 
-        [System.Runtime.Serialization.EnumMember(Value = @"stayOutZone")]
-        StayOutZone = 4,
+        
+        public static string CuttingHeight = "cuttingHeight";
+
+        
+        public static string Headlight = "headlight";
+
+        
+        public static string StayOutZone = "stayOutZone";
 
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.3.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public enum MowerAppMode
+    public class MowerAppModeValues
     {
 
-        [System.Runtime.Serialization.EnumMember(Value = @"MAIN_AREA")]
-        MAIN_AREA = 0,
+        public static string MAIN_AREA = "MAIN_AREA";
 
-        [System.Runtime.Serialization.EnumMember(Value = @"SECONDARY_AREA")]
-        SECONDARY_AREA = 1,
+        
+        public static string SECONDARY_AREA = "SECONDARY_AREA";
 
-        [System.Runtime.Serialization.EnumMember(Value = @"HOME")]
-        HOME = 2,
+        
+        public static string HOME = "HOME";
 
-        [System.Runtime.Serialization.EnumMember(Value = @"DEMO")]
-        DEMO = 3,
+        
+        public static string DEMO = "DEMO";
 
-        [System.Runtime.Serialization.EnumMember(Value = @"UNKNOWN")]
-        UNKNOWN = 4,
+        
+        public static string UNKNOWN = "UNKNOWN";
 
-        [System.Runtime.Serialization.EnumMember(Value = @"POI")]
-        POI = 5,
+        
+        public static string POI = "POI";
 
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.3.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public enum MowerAppActivity
+    public class MowerAppActivityValues
     {
 
-        [System.Runtime.Serialization.EnumMember(Value = @"UNKNOWN")]
-        UNKNOWN = 0,
+        
+        public static string UNKNOWN = "UNKNOWN";
 
-        [System.Runtime.Serialization.EnumMember(Value = @"NOT_APPLICABLE")]
-        NOT_APPLICABLE = 1,
+        
+        public static string NOT_APPLICABLE = "NOT_APPLICABLE";
 
-        [System.Runtime.Serialization.EnumMember(Value = @"MOWING")]
-        MOWING = 2,
+        
+        public static string MOWING = "MOWING";
 
-        [System.Runtime.Serialization.EnumMember(Value = @"GOING_HOME")]
-        GOING_HOME = 3,
+        
+        public static string GOING_HOME = "GOING_HOME";
 
-        [System.Runtime.Serialization.EnumMember(Value = @"CHARGING")]
-        CHARGING = 4,
+        
+        public static string CHARGING = "CHARGING";
 
-        [System.Runtime.Serialization.EnumMember(Value = @"LEAVING")]
-        LEAVING = 5,
+        
+        public static string LEAVING = "LEAVING";
 
-        [System.Runtime.Serialization.EnumMember(Value = @"PARKED_IN_CS")]
-        PARKED_IN_CS = 6,
+        
+        public static string PARKED_IN_CS = "PARKED_IN_CS";
 
-        [System.Runtime.Serialization.EnumMember(Value = @"STOPPED_IN_GARDEN")]
-        STOPPED_IN_GARDEN = 7,
+        
+        public static string STOPPED_IN_GARDEN = "STOPPED_IN_GARDEN";
 
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.3.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public enum MowerAppInactiveReason
+    public class MowerAppInactiveReasonValues
     {
 
-        [System.Runtime.Serialization.EnumMember(Value = @"NONE")]
-        NONE = 0,
+        
+        public static string NONE = "NONE";
 
-        [System.Runtime.Serialization.EnumMember(Value = @"PLANNING")]
-        PLANNING = 1,
+        
+        public static string PLANNING = "PLANNING";
 
-        [System.Runtime.Serialization.EnumMember(Value = @"SEARCHING_FOR_SATELLITES")]
-        SEARCHING_FOR_SATELLITES = 2,
+        
+        public static string SEARCHING_FOR_SATELLITES = "SEARCHING_FOR_SATELLITES";
 
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.3.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public enum MowerAppState
+    public class MowerAppStateValues
     {
 
-        [System.Runtime.Serialization.EnumMember(Value = @"UNKNOWN")]
-        UNKNOWN = 0,
+        
+        public static string UNKNOWN = "UNKNOWN";
 
-        [System.Runtime.Serialization.EnumMember(Value = @"NOT_APPLICABLE")]
-        NOT_APPLICABLE = 1,
+        
+        public static string NOT_APPLICABLE = "NOT_APPLICABLE";
 
-        [System.Runtime.Serialization.EnumMember(Value = @"PAUSED")]
-        PAUSED = 2,
+        
+        public static string PAUSED = "PAUSED";
 
-        [System.Runtime.Serialization.EnumMember(Value = @"IN_OPERATION")]
-        IN_OPERATION = 3,
+        
+        public static string IN_OPERATION = "IN_OPERATION";
 
-        [System.Runtime.Serialization.EnumMember(Value = @"WAIT_UPDATING")]
-        WAIT_UPDATING = 4,
+        
+        public static string WAIT_UPDATING = "WAIT_UPDATING";
 
-        [System.Runtime.Serialization.EnumMember(Value = @"WAIT_POWER_UP")]
-        WAIT_POWER_UP = 5,
+        
+        public static string WAIT_POWER_UP = "WAIT_POWER_UP";
 
-        [System.Runtime.Serialization.EnumMember(Value = @"RESTRICTED")]
-        RESTRICTED = 6,
+        
+        public static string RESTRICTED = "RESTRICTED";
 
-        [System.Runtime.Serialization.EnumMember(Value = @"OFF")]
-        OFF = 7,
+        
+        public static string OFF = "OFF";
 
-        [System.Runtime.Serialization.EnumMember(Value = @"STOPPED")]
-        STOPPED = 8,
+        
+        public static string STOPPED = "STOPPED";
 
-        [System.Runtime.Serialization.EnumMember(Value = @"ERROR")]
-        ERROR = 9,
+        
+        public static string ERROR = "ERROR";
 
-        [System.Runtime.Serialization.EnumMember(Value = @"FATAL_ERROR")]
-        FATAL_ERROR = 10,
+        
+        public static string FATAL_ERROR = "FATAL_ERROR";
 
-        [System.Runtime.Serialization.EnumMember(Value = @"ERROR_AT_POWER_UP")]
-        ERROR_AT_POWER_UP = 11,
+        
+        public static string ERROR_AT_POWER_UP = "ERROR_AT_POWER_UP";
 
     }
 
@@ -1185,8 +1179,7 @@ namespace Husqvarna2Mqtt.Models
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("action")]
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public OverrideAction Action { get; set; } = default!;
+        public string Action { get; set; } = default!;
 
         private System.Collections.Generic.IDictionary<string, object>? _additionalProperties;
 
@@ -1200,35 +1193,35 @@ namespace Husqvarna2Mqtt.Models
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.3.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public enum PlannerRestrictedReason
+    public class PlannerRestrictedReasonValues
     {
 
-        [System.Runtime.Serialization.EnumMember(Value = @"NONE")]
-        NONE = 0,
+        
+        public static string NONE = "NONE";
 
-        [System.Runtime.Serialization.EnumMember(Value = @"WEEK_SCHEDULE")]
-        WEEK_SCHEDULE = 1,
+        
+        public static string WEEK_SCHEDULE = "WEEK_SCHEDULE";
 
-        [System.Runtime.Serialization.EnumMember(Value = @"PARK_OVERRIDE")]
-        PARK_OVERRIDE = 2,
+        
+        public static string PARK_OVERRIDE = "PARK_OVERRIDE";
 
-        [System.Runtime.Serialization.EnumMember(Value = @"SENSOR")]
-        SENSOR = 3,
+        
+        public static string SENSOR = "SENSOR";
 
-        [System.Runtime.Serialization.EnumMember(Value = @"DAILY_LIMIT")]
-        DAILY_LIMIT = 4,
+        
+        public static string DAILY_LIMIT = "DAILY_LIMIT";
 
-        [System.Runtime.Serialization.EnumMember(Value = @"FOTA")]
-        FOTA = 5,
+        
+        public static string FOTA = "FOTA";
 
-        [System.Runtime.Serialization.EnumMember(Value = @"FROST")]
-        FROST = 6,
+        
+        public static string FROST = "FROST";
 
-        [System.Runtime.Serialization.EnumMember(Value = @"ALL_WORK_AREAS_COMPLETED")]
-        ALL_WORK_AREAS_COMPLETED = 7,
+        
+        public static string ALL_WORK_AREAS_COMPLETED = "ALL_WORK_AREAS_COMPLETED";
 
-        [System.Runtime.Serialization.EnumMember(Value = @"EXTERNAL")]
-        EXTERNAL = 8,
+        
+        public static string EXTERNAL = "EXTERNAL";
 
     }
 
@@ -1245,41 +1238,40 @@ namespace Husqvarna2Mqtt.Models
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("mode")]
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public Headlight2Mode Mode { get; set; } = default!;
+        public string Mode { get; set; } = default!;
 
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.3.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public enum OverrideAction
+    public class OverrideActionValues
     {
 
-        [System.Runtime.Serialization.EnumMember(Value = @"NOT_ACTIVE")]
-        NOT_ACTIVE = 0,
+        
+        public static string NOT_ACTIVE = "NOT_ACTIVE";
 
-        [System.Runtime.Serialization.EnumMember(Value = @"FORCE_PARK")]
-        FORCE_PARK = 1,
+        
+        public static string FORCE_PARK = "FORCE_PARK";
 
-        [System.Runtime.Serialization.EnumMember(Value = @"FORCE_MOW")]
-        FORCE_MOW = 2,
+        
+        public static string FORCE_MOW = "FORCE_MOW";
 
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.3.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public enum Headlight2Mode
+    public class Headlight2ModeValues
     {
 
-        [System.Runtime.Serialization.EnumMember(Value = @"ALWAYS_ON")]
-        ALWAYS_ON = 0,
+        
+        public static string ALWAYS_ON = "ALWAYS_ON";
 
-        [System.Runtime.Serialization.EnumMember(Value = @"ALWAYS_OFF")]
-        ALWAYS_OFF = 1,
+        
+        public static string ALWAYS_OFF = "ALWAYS_OFF";
 
-        [System.Runtime.Serialization.EnumMember(Value = @"EVENING_ONLY")]
-        EVENING_ONLY = 2,
+        
+        public static string EVENING_ONLY = "EVENING_ONLY";
 
-        [System.Runtime.Serialization.EnumMember(Value = @"EVENING_AND_NIGHT")]
-        EVENING_AND_NIGHT = 3,
+        
+        public static string EVENING_AND_NIGHT = "EVENING_AND_NIGHT";
 
     }
 
