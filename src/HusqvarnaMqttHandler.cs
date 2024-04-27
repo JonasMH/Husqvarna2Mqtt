@@ -1,4 +1,8 @@
 ﻿using HomeAssistantDiscoveryNet;
+using Husqvarna2Mqtt.Models;
+using MQTTnet;
+using MQTTnet.Packets;
+using System.Diagnostics.Metrics;
 using System.Globalization;
 using System.Text.Json;
 using ToMqttNet;
@@ -7,10 +11,14 @@ namespace Husqvarna2Mqtt;
 
 public class HusqvarnaMqttHandler(ILogger<HusqvarnaMqttHandler> logger, HusqvarnaAutomoverClient client, IMqttConnectionService mqttConnection) : BackgroundService
 {
-    private HashSet<string> _publishedDiscoveryConfigs = [];
+    private HashSet<Guid> _publishedDiscoveryConfigs = [];
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
+
+        mqttConnection.OnApplicationMessageReceived += async (sender, args) => await OnApplicationMessageReceivedAsync(sender, args);
+        await mqttConnection.SubscribeAsync(new MqttTopicFilterBuilder().WithTopic($"{mqttConnection.MqttOptions.NodeId}/write/#").Build());
+
         while (!stoppingToken.IsCancellationRequested)
         {
 
@@ -28,6 +36,90 @@ public class HusqvarnaMqttHandler(ILogger<HusqvarnaMqttHandler> logger, Husqvarn
         }
     }
 
+    private async Task OnApplicationMessageReceivedAsync(object? sender, MQTTnet.Client.MqttApplicationMessageReceivedEventArgs args)
+    {
+        try
+        {
+            var topic = args.ApplicationMessage.Topic;
+            var topicSplit = topic.Split('/');
+
+            var mower = Guid.Parse(topicSplit[2]);
+            var command = topicSplit[3];
+
+            switch (command)
+            {
+                case "action":
+                    var action = topicSplit[4];
+                    await HandleActionCommandAsync(mower, action, args.ApplicationMessage.ConvertPayloadToString());
+                    break;
+                default:
+                    logger.LogWarning("Received unknown command {command} to {mower}", command, mower);
+                    break;
+            }
+
+        } catch(Exception e)
+        {
+            logger.LogError(e, "Failed to handle message {msg} to {topic}", args.ApplicationMessage.ConvertPayloadToString(), args.ApplicationMessage.Topic);
+        }
+
+    }
+
+    private async Task HandleActionCommandAsync(Guid mower, string action, string payload)
+    {
+        switch (action)
+        {
+            case "start":
+                await client.ActionAsync(mower, new Start()
+                {
+                    Type = "Start",
+                    Attributes = {
+                        Duration = 90
+                    }
+                });
+                break;
+            case "start-in-area":
+                await client.ActionAsync(mower, new StartInWorkArea()
+                {
+                    Type = "StartInWorkArea",
+                    Attributes = {
+                        Duration = 90,
+                        WorkAreaId = long.Parse(payload)
+                    }
+                });
+                break;
+            case "pause":
+                await client.ActionAsync(mower, new Pause()
+                {
+                    Type = "Pause",
+                });
+                break;
+            case "park":
+                await client.ActionAsync(mower, new Park()
+                {
+                    Type = "Park",
+                });
+                break;
+            case "park-next-schedule":
+                await client.ActionAsync(mower, new ParkUntilNextSchedule()
+                {
+                    Type = "ParkUntilNextSchedule",
+                });
+                break;
+            case "park-further-notice":
+                await client.ActionAsync(mower, new ParkUntilFurtherNotice()
+                {
+                    Type = "ParkUntilFurtherNotice",
+                });
+                break;
+            case "resume-schedule":
+                await client.ActionAsync(mower, new Pause()
+                {
+                    Type = "ResumeSchedule",
+                });
+                break;
+        }
+    }
+
     private async Task PublishUpdates()
     {
         var mowers = await client.GetMowersAsync();
@@ -40,18 +132,24 @@ public class HusqvarnaMqttHandler(ILogger<HusqvarnaMqttHandler> logger, Husqvarn
                 _publishedDiscoveryConfigs.Add(mower.Id);
             }
 
-            await mqttConnection.PublishAsync(new MQTTnet.MqttApplicationMessageBuilder()
+            await mqttConnection.PublishAsync(new MqttApplicationMessageBuilder()
                 .WithTopic(StatusTopic(mower))
                 .WithRetainFlag()
-                .WithPayload(JsonSerializer.SerializeToUtf8Bytes(mower.Attributes, HusqvarnaJsonContext.Default.Mower))
+                .WithPayload(JsonSerializer.SerializeToUtf8Bytes(mower.Attributes, HusqvarnaJsonContext.Default.MowerData))
                 .Build());
         }
     }
 
-    private string StatusTopic(HusqvarnaDataEntity<Mower> mower) => $"{mqttConnection.MqttOptions.NodeId}/status/{mower.Id}/status";
-    private string HeadlightCommandTopic(HusqvarnaDataEntity<Mower> mower) => $"{mqttConnection.MqttOptions.NodeId}/{mower.Id}/headlights";
+    private string StatusTopic(Mower mower) => $"{mqttConnection.MqttOptions.NodeId}/status/{mower.Id}/status";
+    private string HeadlightCommandTopic(Mower mower) => $"{mqttConnection.MqttOptions.NodeId}/write/{mower.Id}/headlights";
+    private string StartActionCommandTopic(Mower mower) => $"{mqttConnection.MqttOptions.NodeId}/write/{mower.Id}/action/start";
+    private string PauseActionCommandTopic(Mower mower) => $"{mqttConnection.MqttOptions.NodeId}/write/{mower.Id}/action/pause";
+    private string ParkActionCommandTopic(Mower mower) => $"{mqttConnection.MqttOptions.NodeId}/write/{mower.Id}/action/park";
+    private string ParkUntilNextScheduleActionCommandTopic(Mower mower) => $"{mqttConnection.MqttOptions.NodeId}/write/{mower.Id}/action/park-next-schedule";
+    private string ParkUntilFurtherNoticeActionCommandTopic(Mower mower) => $"{mqttConnection.MqttOptions.NodeId}/write/{mower.Id}/action/park-further-notice";
+    private string ResumeScheduleActionCommandTopic(Mower mower) => $"{mqttConnection.MqttOptions.NodeId}/write/{mower.Id}/action/resume-schedule";
 
-    private async Task PublishDiscoveryDocumentAsync(HusqvarnaDataEntity<Mower> mower)
+    private async Task PublishDiscoveryDocumentAsync(Mower mower)
     {
         var device = new MqttDiscoveryDevice
         {
@@ -188,7 +286,58 @@ docked
 {% else %}
 none
 {% endif %}
-"""
+""",
+            StartMowingCommandTopic = StartActionCommandTopic(mower),
+            DockCommandTopic = ParkActionCommandTopic(mower),
+            PauseCommandTopic = PauseActionCommandTopic(mower),
+        });
+
+        await mqttConnection.PublishDiscoveryDocument(new MqttButtonDiscoveryConfig()
+        {
+            Device = device,
+            Name = $"Start",
+            UniqueId = $"{mqttConnection.MqttOptions.NodeId}-{mower.Id}-start",
+            CommandTopic = StartActionCommandTopic(mower),
+        });
+
+        await mqttConnection.PublishDiscoveryDocument(new MqttButtonDiscoveryConfig()
+        {
+            Device = device,
+            Name = $"Pause",
+            UniqueId = $"{mqttConnection.MqttOptions.NodeId}-{mower.Id}-pause",
+            CommandTopic = PauseActionCommandTopic(mower),
+        });
+
+        await mqttConnection.PublishDiscoveryDocument(new MqttButtonDiscoveryConfig()
+        {
+            Device = device,
+            Name = $"Park",
+            UniqueId = $"{mqttConnection.MqttOptions.NodeId}-{mower.Id}-park",
+            CommandTopic = ParkActionCommandTopic(mower),
+        });
+
+        await mqttConnection.PublishDiscoveryDocument(new MqttButtonDiscoveryConfig()
+        {
+            Device = device,
+            Name = $"Park until next schedule",
+            UniqueId = $"{mqttConnection.MqttOptions.NodeId}-{mower.Id}-park-next-schedule",
+            CommandTopic = ParkUntilNextScheduleActionCommandTopic(mower),
+        });
+
+        await mqttConnection.PublishDiscoveryDocument(new MqttButtonDiscoveryConfig()
+        {
+            Device = device,
+            Name = $"Park until further notice",
+            UniqueId = $"{mqttConnection.MqttOptions.NodeId}-{mower.Id}-park-further-notice",
+            CommandTopic = ParkUntilFurtherNoticeActionCommandTopic(mower),
+        });
+
+        await mqttConnection.PublishDiscoveryDocument(new MqttButtonDiscoveryConfig()
+        {
+            Device = device,
+            Name = $"Resume schedule",
+            UniqueId = $"{mqttConnection.MqttOptions.NodeId}-{mower.Id}-resume-schedule",
+            CommandTopic = ResumeScheduleActionCommandTopic(mower),
         });
 
         if (mower.Attributes.Capabilities.Headlights)

@@ -12,13 +12,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.8.1" />
+    <PackageReference Include="OpenTelemetry.Instrumentation.Http" Version="1.8.1" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.5.1" />
 		<PackageReference Include="NodaTime" Version="3.1.11" />
-		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.6" />
+		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.20.1" />
 		<PackageReference Include="MQTTnet" Version="4.3.3.952" />
 		<PackageReference Include="MQTTnet.Extensions.ManagedClient" Version="4.3.3.952" />
 		<PackageReference Include="OpenTelemetry.Exporter.Prometheus.AspNetCore" Version="1.6.0-rc.1" />
-		<PackageReference Include="OpenTelemetry.Extensions.Hosting" Version="1.7.0" />
+    <PackageReference Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.8.1" />
+		<PackageReference Include="OpenTelemetry.Extensions.Hosting" Version="1.8.1" />
 		<PackageReference Include="ToMqttNet" Version="3.0.2" />
   </ItemGroup>
 

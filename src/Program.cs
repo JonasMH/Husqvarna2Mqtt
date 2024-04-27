@@ -1,19 +1,32 @@
 ﻿using Husqvarna2Mqtt;
 using Microsoft.Extensions.Options;
 using MQTTnet.Client;
+using OpenTelemetry;
 using OpenTelemetry.Metrics;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 using System.Security.Cryptography.X509Certificates;
 using ToMqttNet;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Logging.AddOpenTelemetry();
+
 builder.Services.AddOpenTelemetry()
-    .WithMetrics(builder =>
+    .UseOtlpExporter()
+    .ConfigureResource(resource =>
     {
-        builder.AddPrometheusExporter();
-        builder.AddMeter("ToMqttNet");
-        builder.AddMeter("Microsoft.AspNetCore.Hosting",
-                         "Microsoft.AspNetCore.Server.Kestrel");
+        resource.AddService(serviceName: builder.Environment.ApplicationName);
+    })
+    .WithMetrics(metrics =>
+    {
+        metrics.AddPrometheusExporter();
+    })
+    .WithTracing(tracing =>
+    {
+        tracing.AddAspNetCoreInstrumentation();
+        tracing.AddHttpClientInstrumentation();
     });
 
 builder.Services.AddHealthChecks();

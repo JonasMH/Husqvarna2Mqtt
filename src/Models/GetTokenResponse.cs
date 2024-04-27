@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Husqvarna2Mqtt;
+namespace Husqvarna2Mqtt.Models;
 
 public class GetTokenResponse
 {

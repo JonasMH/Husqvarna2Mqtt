@@ -1,22 +1,9 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Husqvarna2Mqtt.Models;
+using Microsoft.Extensions.Options;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text.Json.Serialization;
 
 namespace Husqvarna2Mqtt;
-
-
-public class HusqvarnaDataResponse<T>
-{
-    [JsonPropertyName("data")]
-    public T Data { get; set; }
-}
-
-public class HusqvarnaDataEntity<T>
-{
-    public string Type { get; set; }
-    public string Id { get; set; }
-    public T Attributes { get; set; }
-}
 
 public class HusqvarnaAutomoverClient(HttpClient httpClient, IOptions<HusqvarnaAutomoverClientOptions> options)
 {
@@ -60,7 +47,7 @@ public class HusqvarnaAutomoverClient(HttpClient httpClient, IOptions<HusqvarnaA
         return _handler.ReadJwtToken(tokenResponse.AccessToken);
     }
 
-    public async Task<List<HusqvarnaDataEntity<Mower>>> GetMowersAsync()
+    public async Task<ICollection<Mower>> GetMowersAsync()
     {
         var request = new HttpRequestMessage(HttpMethod.Get, "https://api.amc.husqvarna.dev/v1/mowers");
 
@@ -72,7 +59,22 @@ public class HusqvarnaAutomoverClient(HttpClient httpClient, IOptions<HusqvarnaA
 
         response.EnsureSuccessStatusCode();
 
-        return (await response.Content.ReadFromJsonAsync(HusqvarnaJsonContext.Default.HusqvarnaDataResponseListHusqvarnaDataEntityMower))!.Data;
-    
+        return (await response.Content.ReadFromJsonAsync(HusqvarnaJsonContext.Default.JsonApiDataListDocument))!.Data;
+    }
+
+    public async Task<JsonApiDataDocumentCommandResult> ActionAsync<T>(Guid mowerId, T action) where T : JsonApiAction
+    {
+        var request = new HttpRequestMessage(HttpMethod.Post, $"https://api.amc.husqvarna.dev/v1/mowers/{mowerId}/actions");
+        request.Content = JsonContent.Create(action, HusqvarnaJsonContext.Default.GetTypeInfo(typeof(T)));
+
+        await AppendAuthAsync(request);
+
+
+        var response = await httpClient.SendAsync(request);
+
+
+        response.EnsureSuccessStatusCode();
+
+        return (await response.Content.ReadFromJsonAsync(HusqvarnaJsonContext.Default.JsonApiDataDocumentCommandResult));
     }
 }
