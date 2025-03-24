@@ -7,7 +7,7 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    container: mcr.microsoft.com/dotnet/sdk:8.0-preview
+    container: mcr.microsoft.com/dotnet/sdk:9.0
     steps:
       - name: Check out the repo
         uses: actions/checkout@v3
