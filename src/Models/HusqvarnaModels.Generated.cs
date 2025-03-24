@@ -22,7 +22,7 @@ namespace Husqvarna2Mqtt.Models
 {
     using System = global::System;
 
-    
+
 
     /// <summary>
     /// A data document compliant with the JSON API Specification.
@@ -232,7 +232,6 @@ namespace Husqvarna2Mqtt.Models
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("type")]
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter<JsonApiDataCommandResultType>))]
         public JsonApiDataCommandResultType Type { get; set; } = default!;
 
         /// <summary>
@@ -449,7 +448,6 @@ namespace Husqvarna2Mqtt.Models
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("mode")]
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter<MowerAppMode>))]
         public MowerAppMode Mode { get; set; } = default!;
 
         /// <summary>
@@ -466,7 +464,6 @@ namespace Husqvarna2Mqtt.Models
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("activity")]
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter<MowerAppActivity>))]
         public MowerAppActivity Activity { get; set; } = default!;
 
         /// <summary>
@@ -478,7 +475,6 @@ namespace Husqvarna2Mqtt.Models
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("inactiveReason")]
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter<MowerAppInactiveReason>))]
         public MowerAppInactiveReason InactiveReason { get; set; } = default!;
 
         /// <summary>
@@ -498,7 +494,6 @@ namespace Husqvarna2Mqtt.Models
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("state")]
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter<MowerAppState>))]
         public MowerAppState State { get; set; } = default!;
 
         /// <summary>
@@ -667,7 +662,6 @@ namespace Husqvarna2Mqtt.Models
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("restrictedReason")]
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter<PlannerRestrictedReason>))]
         public PlannerRestrictedReason RestrictedReason { get; set; } = default!;
 
         /// <summary>
@@ -935,7 +929,6 @@ namespace Husqvarna2Mqtt.Models
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("severity")]
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter<MessageSeverity>))]
         public MessageSeverity Severity { get; set; } = default!;
 
         /// <summary>
@@ -1270,6 +1263,7 @@ namespace Husqvarna2Mqtt.Models
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.3.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter<JsonApiDataCommandResultType>))]
     public enum JsonApiDataCommandResultType
     {
 
@@ -1291,6 +1285,7 @@ namespace Husqvarna2Mqtt.Models
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.3.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter<MowerAppMode>))]
     public enum MowerAppMode
     {
 
@@ -1315,6 +1310,7 @@ namespace Husqvarna2Mqtt.Models
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.3.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter<MowerAppActivity>))]
     public enum MowerAppActivity
     {
 
@@ -1345,6 +1341,7 @@ namespace Husqvarna2Mqtt.Models
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.3.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter<MowerAppInactiveReason>))]
     public enum MowerAppInactiveReason
     {
 
@@ -1360,6 +1357,7 @@ namespace Husqvarna2Mqtt.Models
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.3.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter<MowerAppState>))]
     public enum MowerAppState
     {
 
@@ -1410,7 +1408,6 @@ namespace Husqvarna2Mqtt.Models
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("action")]
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter<OverrideAction>))]
         public OverrideAction Action { get; set; } = default!;
 
         private System.Collections.Generic.IDictionary<string, object>? _additionalProperties;
@@ -1425,6 +1422,7 @@ namespace Husqvarna2Mqtt.Models
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.3.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter<PlannerRestrictedReason>))]
     public enum PlannerRestrictedReason
     {
 
@@ -1455,6 +1453,9 @@ namespace Husqvarna2Mqtt.Models
         [System.Runtime.Serialization.EnumMember(Value = @"EXTERNAL")]
         EXTERNAL = 8,
 
+        [System.Runtime.Serialization.EnumMember(Value = @"NOT_APPLICABLE")]
+        NOT_APPLICABLE = 9,
+
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.3.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
@@ -1470,12 +1471,12 @@ namespace Husqvarna2Mqtt.Models
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("mode")]
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter<Headlight2Mode>))]
         public Headlight2Mode Mode { get; set; } = default!;
 
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.3.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter<MessageSeverity>))]
     public enum MessageSeverity
     {
 
@@ -1503,6 +1504,7 @@ namespace Husqvarna2Mqtt.Models
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.3.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter<OverrideAction>))]
     public enum OverrideAction
     {
 
@@ -1518,6 +1520,7 @@ namespace Husqvarna2Mqtt.Models
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.3.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter<Headlight2Mode>))]
     public enum Headlight2Mode
     {
 
@@ -1538,10 +1541,10 @@ namespace Husqvarna2Mqtt.Models
 
 }
 
-#pragma warning restore  108
-#pragma warning restore  114
-#pragma warning restore  472
-#pragma warning restore  612
+#pragma warning restore 108
+#pragma warning restore 114
+#pragma warning restore 472
+#pragma warning restore 612
 #pragma warning restore 1573
 #pragma warning restore 1591
 #pragma warning restore 8073
