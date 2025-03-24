@@ -5,5 +5,5 @@ namespace Husqvarna2Mqtt.Models;
 public class GetTokenResponse
 {
     [JsonPropertyName("access_token")]
-    public string AccessToken { get; set; }
+    public string AccessToken { get; set; } = "";
 }

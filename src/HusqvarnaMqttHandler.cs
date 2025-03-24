@@ -1,6 +1,7 @@
 ﻿using HomeAssistantDiscoveryNet;
 using Husqvarna2Mqtt.Models;
 using MQTTnet;
+using MQTTnet.Client;
 using System.Text.Json;
 using ToMqttNet;
 
@@ -13,7 +14,7 @@ public class HusqvarnaMqttHandler(ILogger<HusqvarnaMqttHandler> logger, Husqvarn
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
 
-        mqttConnection.OnApplicationMessageReceived += async (sender, args) => await OnApplicationMessageReceivedAsync(sender, args);
+        mqttConnection.OnApplicationMessageReceivedAsync += HandleApplicationMessageReceivedAsync;
         await mqttConnection.SubscribeAsync(new MqttTopicFilterBuilder().WithTopic($"{mqttConnection.MqttOptions.NodeId}/write/#").Build());
 
         while (!stoppingToken.IsCancellationRequested)
@@ -33,7 +34,7 @@ public class HusqvarnaMqttHandler(ILogger<HusqvarnaMqttHandler> logger, Husqvarn
         }
     }
 
-    private async Task OnApplicationMessageReceivedAsync(object? sender, MQTTnet.Client.MqttApplicationMessageReceivedEventArgs args)
+    private async Task HandleApplicationMessageReceivedAsync(MqttApplicationMessageReceivedEventArgs args)
     {
         try
         {

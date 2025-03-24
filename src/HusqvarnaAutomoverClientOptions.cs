@@ -1,7 +1,11 @@
-﻿namespace Husqvarna2Mqtt;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Husqvarna2Mqtt;
 
 public class HusqvarnaAutomoverClientOptions
 {
-    public string ClientId { get; set; }
-    public string ClientSecret { get; set; }
+    [Required]
+    public string ClientId { get; set; } = "";
+    [Required]
+    public string ClientSecret { get; set; } = "";
 }
